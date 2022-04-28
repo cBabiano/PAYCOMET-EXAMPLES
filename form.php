@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-  <html>
-  <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>PAYCOMET</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="bootstrap.min.css" rel="stylesheet" type="text/css">
-  </head>
-  <body>
-  <script src="http://code.jquery.com/jquery.js"></script>
-  <script type="text/javascript" src="bootstrap.min.js"></script>
+<?php
+include 'TEMPLATE/header.php';
+?>
   <form method="POST" action="" class="form-horizontal">
     <input type="hidden" name="action" value="1" />
     <div class="container padding-left:5px;">
@@ -107,6 +99,7 @@ header("Location: ".$URL);
 
 ?>
 
-
-
+<?php
+    include 'TEMPLATE/footer.php';
+?>
   
