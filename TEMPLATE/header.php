@@ -16,7 +16,7 @@
 <body>
     
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        <a class="navbar-brand" href ="index.php"><img src="IMG/logopay.png" alt="" ></a>
+        <a class="navbar-brand" href ="https://docs.paycomet.com/" target="_blank"><img src="IMG/logopay.png" alt="" ></a>
         <button class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -24,6 +24,9 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item ">
                     <a class="nav-link" href="form.php">Iframe <span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="">Jet-Iframe <span class="sr-only"></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="https://docs.paycomet.com/es/cards/testcards" target="_blank">Tarjetas de Prueba<span class="sr-only"></span></a>
