@@ -43,7 +43,7 @@
   </html>
 <?php
 
-
+//Adpatarlo el amount *100
 $amount = number_format($_POST['amount']*100,0, '.', '');
 $valores = array (
 'operationType' => 1,
