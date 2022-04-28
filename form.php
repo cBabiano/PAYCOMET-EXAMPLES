@@ -1,7 +1,7 @@
 <?php
 include 'TEMPLATE/header.php';
 ?>
-  <form method="POST" action="" class="form-horizontal">
+<form method="POST" action="" class="form-horizontal">
     <input type="hidden" name="action" value="1" />
     <div class="container padding-left:5px;">
       <div class="container">
@@ -35,7 +35,7 @@ include 'TEMPLATE/header.php';
   </html>
 <?php
 
-//Adpatarlo el amount *100
+
 $amount = number_format($_POST['amount']*100,0, '.', '');
 $valores = array (
 'operationType' => 1,
@@ -98,6 +98,7 @@ curl_close($curl);
 header("Location: ".$URL);
 
 ?>
+
 
 <?php
     include 'TEMPLATE/footer.php';
