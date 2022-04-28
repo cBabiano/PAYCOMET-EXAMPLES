@@ -12,6 +12,9 @@
         <link href="bootstrap.min.css" rel="stylesheet" type="text/css">
         <script src="http://code.jquery.com/jquery.js"></script>
         <script type="text/javascript" src="bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
     </head>
 <body>
     
@@ -26,7 +29,7 @@
                     <a class="nav-link" href="form.php">Iframe <span class="sr-only"></span></a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="">Jet-Iframe <span class="sr-only"></span></a>
+                    <a class="nav-link" href="jet_iframe.php">Jet-Iframe <span class="sr-only"></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="https://docs.paycomet.com/es/cards/testcards" target="_blank">Tarjetas de Prueba<span class="sr-only"></span></a>
@@ -34,6 +37,12 @@
             </ul>
         </div>
     </nav>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
    <br>
    <br>
    <br>
