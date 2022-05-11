@@ -40,7 +40,7 @@ $amount = number_format($_POST['amount']*100,0, '.', '');
 $valores = array (
 'operationType' => 1,
 'language' => "es",
-'terminal' =>  9779,
+'terminal' =>  38424,
 'order'=> $_POST['order'],
 'amount' => $amount,
 'currency' =>  "EUR",
@@ -84,7 +84,7 @@ curl_setopt_array($curl, array(
     CURLOPT_HTTPHEADER => array(
         'Content-Type: application/json',
         'Connection: Keep-Alive',
-        'PAYCOMET-API-TOKEN: 4946862062130a3737333942ee2daedaf04ff3d5',
+        'PAYCOMET-API-TOKEN: d58bcc758623525ad0d90708101dfdad5541882b',
 
   ),
 ));
@@ -95,27 +95,8 @@ $URL = json_decode($response)->challengeUrl;;
 //Termina el CURL
 curl_close($curl);
 //Redirigir a la URL de challenge cambia la URL del navegador
-if($URL != null){
 
-  echo '<script type="text/javascript">';
-  
-  echo 'window.location.href="'.$URL.'";';
-  
-  echo '</script>';
-  
-  echo '<noscript>';
-  
-  echo '<meta http-equiv="refresh" content="0;url='.$URL.'" />';
-  
-  echo '</noscript>';
-  
-  
-  
-  die();
-  
-  }
 ?>
-
 
 <?php
     include 'TEMPLATE/footer.php';
