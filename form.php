@@ -40,28 +40,16 @@ include 'TEMPLATE/header.php';
 include("class/API_Rest.php");
 
 // Se indica la API-KEY
-$apiKey		= "d58bcc758623525ad0d90708101dfdad5541882b";
+$apiKey		= "4946862062130a3737333942ee2daedaf04ff3d5";
 $paycomet= new Paycomet_Rest($apiKey);
 
-<<<<<<< HEAD
-  ),
-));
-//lanza la peticion
-$response = curl_exec($curl);
-//Decodifica el JSON y lo guarda en URL la CHALLENGE
-$URL = json_decode($response)->challengeUrl;;
-//Termina el CURL
-curl_close($curl);
-//Redirigir a la URL de challenge cambia la URL del navegador
-=======
 // Se llama al método form y guardamos la respuesta en $response
-$response = $paycomet-> form( 1,'ES',38424,$_POST['order'],number_format($_POST['amount']*100,0, '.', ''),'EUR',1);
+$response = $paycomet-> form( 1,'ES',9779,$_POST['order'],number_format($_POST['amount']*100,0, '.', ''),'EUR',1);
 
 // Guardamos la challengeUrl
 $URL = json_decode($response)->challengeUrl;
 
 // Redirección con javascript
->>>>>>> f3beca04e4ab445edcf02296eeac3ab72d528d99
 if($URL != null){
 
   echo '<script type="text/javascript">';

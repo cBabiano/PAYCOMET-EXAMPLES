@@ -12,7 +12,7 @@
 include("class/API_Rest.php");
 
 // Se indica el jetID
-$jetID = "ROMrGL6huZ05fwnti7YeAIUkDpqoxsKb";
+$jetID = "2Ui0z7o84Gv3dmAhXabHRD1CngSpywex";
 
 // Comprobamos que devuelve jetToken
 if (isset($_POST["paytpvToken"])) {
@@ -25,14 +25,14 @@ if (isset($_POST["paytpvToken"])) {
     if ($token && strlen($token) == 64) {
 
 		// Indicamos la API-KEY
-		$apiKey		= "d58bcc758623525ad0d90708101dfdad5541882b";
+		$apiKey		= "4946862062130a3737333942ee2daedaf04ff3d5";
 		$paycomet= new Paycomet_Rest($apiKey);
 		
 		// Ejecutamos el addUser y guardamos la respuesta
-		$responseUser = $paycomet-> addUserTokenTmp($token, 38424);
-	
+		$responseUser = $paycomet-> addUserTokenTmp($token, 9779);
+
 		// Ejecutamos el executePurchase con el idUser y tokenUser de la respuesta del addUser
-		$response = $paycomet-> executePurchase(38424,$_POST['order'],number_format($_POST['amount']*100,0, '.', ''),'EUR','127.0.0.1',1,json_decode($responseUser)->idUser,json_decode($responseUser)->tokenUser,1,1,null,null,null,null,null,null,null);
+		$response = $paycomet-> executePurchase(9779,$_POST['order'],number_format($_POST['amount']*100,0, '.', ''),'EUR','127.0.0.1',1,json_decode($responseUser)->idUser,json_decode($responseUser)->tokenUser,1,1,null,null,null,null,null,null,null);
 	
 		// Verificamos si fallo
 		if (json_decode($response)->errorCode != 0) {
