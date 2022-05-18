@@ -10,7 +10,9 @@
 <?php
 include 'TEMPLATE/header.php';
 ?>
-<h1>Ocurrió un fallo en el pago</h1>
+<div class="alert alert-danger" role="alert">
+    <h1>Ocurrió un fallo en el pago</h1>
+</div>
 <?php
     include 'TEMPLATE/footer.php';
 ?>

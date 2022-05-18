@@ -10,7 +10,9 @@
 <?php
 include 'TEMPLATE/header.php';
 ?>
-<h1>El pago se completó con exito</h1>
+<div class="alert alert-success" role="alert">
+    <h1>El pago se completó con exito</h1>
+</div>
 <?php
     include 'TEMPLATE/footer.php';
 ?>
