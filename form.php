@@ -95,7 +95,25 @@ $URL = json_decode($response)->challengeUrl;;
 //Termina el CURL
 curl_close($curl);
 //Redirigir a la URL de challenge cambia la URL del navegador
+if($URL != null){
 
+  echo '<script type="text/javascript">';
+  
+  echo 'window.location.href="'.$URL.'";';
+  
+  echo '</script>';
+  
+  echo '<noscript>';
+  
+  echo '<meta http-equiv="refresh" content="0;url='.$URL.'" />';
+  
+  echo '</noscript>';
+  
+  
+  
+  die();
+  
+  }
 ?>
 
 <?php
