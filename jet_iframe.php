@@ -8,125 +8,51 @@
  * @version 1.1 2019-11-07
  */
  
-$jetID 			= "2Ui0z7o84Gv3dmAhXabHRD1CngSpywex";
-$merchantCode   = "sfj65qn8";
-$terminal       = "9779";
-$password       = "Vs0cFTtz8fuKQHm2j19h";
+// Se añade la clase
+include("class/API_Rest.php");
 
+// Se indica el jetID
+$jetID = "ROMrGL6huZ05fwnti7YeAIUkDpqoxsKb";
+
+// Comprobamos que devuelve jetToken
 if (isset($_POST["paytpvToken"])) {
     date_default_timezone_set("Europe/Madrid");
 
+	// Guardamos el token
     $token = $_POST["paytpvToken"];
-	//Jet_Token
-	//var_dump($token);
-	//die();
-	//Jet_Token
+
+	// Verificamos que el token es correcto
     if ($token && strlen($token) == 64) {
 
-        $endPoint       			= "https://api.paycomet.com/gateway/xml-bankstore?wsdl";
-        $productDescription         = "XML_BANKSTORE TEST productDescription";
-        $owner                      = "XML_BANKSTORE TEST owner";
+		// Indicamos la API-KEY
+		$apiKey		= "d58bcc758623525ad0d90708101dfdad5541882b";
+		$paycomet= new Paycomet_Rest($apiKey);
+		
+		// Ejecutamos el addUser y guardamos la respuesta
+		$responseUser = $paycomet-> addUserTokenTmp($token, 38424);
+	
+		// Ejecutamos el executePurchase con el idUser y tokenUser de la respuesta del addUser
+		$response = $paycomet-> executePurchase(38424,$_POST['order'],number_format($_POST['amount']*100,0, '.', ''),'EUR','127.0.0.1',1,json_decode($responseUser)->idUser,json_decode($responseUser)->tokenUser,1,1,null,null,null,null,null,null,null);
+	
+		// Verificamos si fallo
+		if (json_decode($response)->errorCode != 0) {
+			$URL = "https://www.paycomet.com/url-ko";
+		} else {
+			$URL = json_decode($response)->challengeUrl;
+		}
 
-        $signature
-            = hash("sha512",
-                $merchantCode
-                .$token
-                .$jetID
-                .$terminal
-                .$password
-        );
-
-
-        $ip				= $_SERVER["REMOTE_ADDR"];
-
-        try {
-            $context = stream_context_create(array(
-                'ssl' => array(
-                    'verify_peer' => false,
-                    'verify_peer_name' => false,
-                    'allow_self_signed' => true
-                )
-            ));
-
-            $clientSOAP = new SoapClient($endPoint, array('stream_context' => $context));
-            $addUserTokenResponse
-                = $clientSOAP->add_user_token(
-                    $merchantCode,
-                    $terminal,
-                    $token,
-                    $jetID,
-                    $signature,
-                    $ip
-				);					
-
-			if ($addUserTokenResponse["DS_ERROR_ID"] == "0") {
-				// OK
-				//echo " Proceso correcto. Se ha obtenido el token";
-//var_dump($addUserTokenResponse);
-
-
-$idUser = $addUserTokenResponse['DS_IDUSER'];
-$tokenUser = $addUserTokenResponse['DS_TOKEN_USER'];
-$account = $merchantCode;
-$terminalid = $terminal;
-// $password = $password;
-$operation = 109;
-$language = "ES";
-$URLOK = "https://www.paycomet.com/url-ko";
-$URLKO = "https://www.paycomet.com/url-ok";
-$reference = date('YmdHis');
-/*var_dump($reference);//muestra el tipo de variable y su contenido,*/
-$amount = 250;
-$currency = "EUR";
-$concept = "Prueba Compra";
-$scoring = 50;
-$hash = hash("sha512",$account.$idUser.$tokenUser.$terminalid.$operation.$secure.$reference.$amount.$currency.md5($password));
-
-$sm ='MERCHANT_MERCHANTCODE='.$account.
-'&MERCHANT_TERMINAL='.$terminalid.
-'&OPERATION='.$operation.
-'&LANGUAGE='.$language.
-'&MERCHANT_MERCHANTSIGNATURE='.$hash.
-'&MERCHANT_ORDER='.$reference.
-'&MERCHANT_AMOUNT='.$amount.
-'&MERCHANT_CURRENCY='.$currency.
-'&MERCHANT_PRODUCTDESCRIPTION='.$concept.
-'&MERCHANT_SCORING='.$scoring.
-'&URLOK='.$URLOK.
-'&URLKO='.$URLKO.
-'&IDUSER='.$idUser.	
-'&TOKEN_USER='.$tokenUser .
-'&3DSECURE=1'.$secure;
-
-echo '<iframe title="titulo" src="https://api.paycomet.com/gateway/ifr-bankstore?'.$sm.'" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" scrolling="no" style="border: 0px solid #000000; padding: 0px; margin: 0px">
-	</iframe>';
-
-
-				//header("Location: https://localhost:8443/Demo/ok.php");
-				//die();
-
-				
-				//var_dump($executePurchaseResponse);
-
-			} else {
-				//var_dump("Error al obtener el token");
-				//var_dump($addUserTokenResponse["DS_ERROR_ID"]);
-				//return false;
-				header("Location: https://localhost:8888/Demo/ko.php");
-				die();
-			}
-        } catch(SoapFault $e){
-			//var_dump($e);
-			header("Location: https://localhost:8888/Demo/ko.php");
-				die();
-        }
-    } else {
-		//var_dump("Error, no se ha obtenido token");
-		header("Location: https://localhost:8888/Demo/ko.php");
-				die();
-        //return false;
-    }
-    return false;
+		// Redirigimos con javascript
+		if($URL != null){
+			echo '<script type="text/javascript">';
+			echo 'window.location.href="'.$URL.'";';
+			echo '</script>';
+			echo '<noscript>';
+			echo '<meta http-equiv="refresh" content="0;url='.$URL.'" />';
+			echo '</noscript>'; 
+		  
+			die();
+		  }
+	}
 }
 include 'TEMPLATE/header.php';
 ?>
@@ -142,17 +68,32 @@ include 'TEMPLATE/header.php';
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<!------ Include the above in your HEAD tag ---------->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+
 	<div class="container">
 			<div class="row">
-				<aside class="col-sm-6">
+				<aside class="col-sm-8">
 					<p><h1></h1> </p>
 
 					<article class="card">
-						<div class="card-body p-5">								
+						<div class="card-body">	
+						<form role="form" id="paycometPaymentForm" method="POST">
+
 							<hr>
-							<form role="form" id="paycometPaymentForm" method="POST">
-							<input type="hidden" name="amount" value="1234">
+							
 							<input type="hidden" data-paycomet="jetID" value="<?php echo $jetID; ?>">
+
+							<div class="form-group">
+										<label for="exampleInputName2" class="control-label">CANTIDAD A PAGAR</label>
+										<div class="input-group">
+											<input type="number" class="form-control" id="amount" required="required" name="amount" step="0.01" placeholder="Importe Máximo 250,00 Euros" min="1" max="250" pattern="[0-9]+([,\.][0-9]{0,2})?"/>
+											<span class="input-group-addon" id="sizing-addon2">€</span>
+										</div>
+										</div>
+										<div class="form-group">
+										<label for="exampleInputName2" class="control-label">REFERENCIA [Máximo 20 caracteres]</label>
+										<input type="text" class="form-control" required="required" id="order" name="order"  aria-label="" maxlength="20"/>
+										</div>
+										<hr>
 							<div class="form-group">
 							<label for="username">Titular de la tarjeta</label>
 								<div class="input-group">
@@ -201,7 +142,7 @@ include 'TEMPLATE/header.php';
                                         <option value="21">2021</option>
                                         <option value="22">2022</option>
                                         <option value="23">2023</option>
-                                        <option value="24">2024</option>
+                                        <option value="24">2030</option>
 											</select>
 										</div>
 									</div>
@@ -235,5 +176,4 @@ include 'TEMPLATE/header.php';
 <?php
     include 'TEMPLATE/footer.php';
 ?>
-
 </html>

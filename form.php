@@ -22,6 +22,7 @@ include 'TEMPLATE/header.php';
               <label for="exampleInputName2" class="control-label">REFERENCIA [Máximo 20 caracteres]</label>
               <input type="text" class="form-control" id="order" name="order"  aria-label="" maxlength="20"/>
             </div>
+            </div>
             <div class="form-group">
               <button type="submit" class="btn btn-large btn-block btn-primary">Continuar</button>
             </div>
@@ -35,57 +36,14 @@ include 'TEMPLATE/header.php';
   </html>
 <?php
 
+// Se añade la clase
+include("class/API_Rest.php");
 
-$amount = number_format($_POST['amount']*100,0, '.', '');
-$valores = array (
-'operationType' => 1,
-'language' => "es",
-'terminal' =>  38424,
-'order'=> $_POST['order'],
-'amount' => $amount,
-'currency' =>  "EUR",
-'secure' =>  1,
-'method' => $_POST['method'],
-);
-//payment es un objeto
-$payment = new stdClass();
-$payment->terminal = $valores['terminal'];//propiedades del objeto payments
-$payment->order = $valores['order'];//propiedades del objeto payments
-$payment->methods = array(); //propiedades del objeto payments si se queda en blanco monta todos los que tengas
-//si defines (1) carga el que tengas https://docs.paycomet.com/es/recursos/metodos 
-$payment->currency = $valores['currency'];//propiedades del objeto payments
-$payment->secure = $valores['secure'];//propiedades del objeto payments
-$payment->amount = $valores['amount'];//propiedades del objeto payments
+// Se indica la API-KEY
+$apiKey		= "d58bcc758623525ad0d90708101dfdad5541882b";
+$paycomet= new Paycomet_Rest($apiKey);
 
-
-$postFields = array(
-"operationType" => $valores['operationType'],
-"language" => $valores['language'],
-"payment" => $payment,
-
-);
-
-//codifica el ARRAY en JSON
-$jsonPostFields = json_encode($postFields);
-//Inicia el CURL
-$curl = curl_init();
-// Valores de CURL
-curl_setopt_array($curl, array(
-  CURLOPT_URL => 'https://rest.paycomet.com/v1/form',
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 3,
-  CURLOPT_POST => 1,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'POST',
-  CURLOPT_POSTFIELDS => $jsonPostFields,
-    CURLOPT_HTTPHEADER => array(
-        'Content-Type: application/json',
-        'Connection: Keep-Alive',
-        'PAYCOMET-API-TOKEN: d58bcc758623525ad0d90708101dfdad5541882b',
-
+<<<<<<< HEAD
   ),
 ));
 //lanza la peticion
@@ -95,6 +53,15 @@ $URL = json_decode($response)->challengeUrl;;
 //Termina el CURL
 curl_close($curl);
 //Redirigir a la URL de challenge cambia la URL del navegador
+=======
+// Se llama al método form y guardamos la respuesta en $response
+$response = $paycomet-> form( 1,'ES',38424,$_POST['order'],number_format($_POST['amount']*100,0, '.', ''),'EUR',1);
+
+// Guardamos la challengeUrl
+$URL = json_decode($response)->challengeUrl;
+
+// Redirección con javascript
+>>>>>>> f3beca04e4ab445edcf02296eeac3ab72d528d99
 if($URL != null){
 
   echo '<script type="text/javascript">';

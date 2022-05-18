@@ -7,6 +7,11 @@
     <title>Inicio</title>
 </head>
 <body>
-    
+<?php
+include 'TEMPLATE/header.php';
+?>
+<?php
+    include 'TEMPLATE/footer.php';
+?>
 </body>
 </html>
