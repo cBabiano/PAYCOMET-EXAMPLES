@@ -27,16 +27,43 @@ if (isset($_POST["paytpvToken"])) {
 		// Indicamos la API-KEY
 		$apiKey		= "d58bcc758623525ad0d90708101dfdad5541882b";
 		$paycomet= new Paycomet_Rest($apiKey);
+
+		// propiedades
+		$terminal = 38424;
+		$amount = number_format($_POST['amount']*100,0, '.', '');
+
 		
 		// Ejecutamos el addUser y guardamos la respuesta
-		$responseUser = $paycomet-> addUserTokenTmp($token, 38424);
+		$responseUser = $paycomet-> addUserTokenTmp($token, $terminal);
+
+		// Guardamos el idUser y tokenUser
+		$idUser = json_decode($responseUser)->idUser;
+		$tokenUser = json_decode($responseUser)->tokenUser;
 	
-		// Ejecutamos el executePurchase con el idUser y tokenUser de la respuesta del addUser
-		$response = $paycomet-> executePurchase(38424,$_POST['order'],number_format($_POST['amount']*100,0, '.', ''),'EUR','127.0.0.1',1,json_decode($responseUser)->idUser,json_decode($responseUser)->tokenUser,1,1,null,null,null,null,null,null,null);
+		// Ejecutamos el executePurchase
+		$response = $paycomet-> executePurchase(
+			$terminal,
+			$_POST['order'],
+			$amount,
+			'EUR',
+			'127.0.0.1',
+			1, // method id
+			$idUser,
+			$tokenUser,
+			1, // secure
+			1, // user interaction
+			null, // sca_exception
+			null, // trx_type
+			null, // productDescription
+			null, // scoring
+			"http://localhost/PAYCOMET-EXAMPLES/ok.php",
+			"http://localhost/PAYCOMET-EXAMPLES/ko.php",
+			null // merchant_data
+		);
 	
 		// Verificamos si fallo
 		if (json_decode($response)->errorCode != 0) {
-			$URL = "https://www.paycomet.com/url-ko";
+			$URL = "/PAYCOMET-EXAMPLES/ko.php";
 		} else {
 			$URL = json_decode($response)->challengeUrl;
 		}
