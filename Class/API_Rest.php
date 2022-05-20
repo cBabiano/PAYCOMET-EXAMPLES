@@ -9,6 +9,33 @@ class Paycomet_Rest
 	
 	}
 
+    public function methods($terminal)
+	{
+            
+        $postFields = array(
+        "terminal" => $terminal
+        );
+        $jsonPostFields = json_encode($postFields);
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://rest.paycomet.com/v1/methods',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => $jsonPostFields,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Connection: Keep-Alive',
+                'PAYCOMET-API-TOKEN: '.$this->$API_KEY
+
+        ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return $response;
+	}
+
      /**
 	* Añade una tarjeta a PAYCOMET. ¡¡¡ IMPORTANTE !!! Esta entrada directa debe ser activada por PAYCOMET.
 	* @param int $operationtype Tipo de operación PAYCOMET (ID 1 - autorización, 3 - preautorización, 9 - suscripción, 107 - tokenización, 114 - autorización por referencia, 116 - autorización dcc).
