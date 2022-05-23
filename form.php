@@ -19,8 +19,21 @@ include 'TEMPLATE/header.php';
               </div>
             </div>
             <div class="form-group">
-              <label for="exampleInputName2" class="control-label">REFERENCIA [Máximo 20 caracteres]</label>
+              <label for="method" class="control-label">REFERENCIA [Máximo 20 caracteres]</label>
               <input type="text" class="form-control" id="order" name="order"  aria-label="" maxlength="20"/>
+            </div>
+            <div class="form-group">
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary active">
+                  <input type="radio" name="method" id="card" value="1" checked> Tarjeta
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="method" id="bizum" value="11"> Bizum
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="method" id="multibanco" value="16"> Multibanco
+                </label>
+              </div>
             </div>
             </div>
             <div class="form-group">
@@ -43,8 +56,47 @@ include("class/API_Rest.php");
 $apiKey		= "4946862062130a3737333942ee2daedaf04ff3d5";
 $paycomet= new Paycomet_Rest($apiKey);
 
-// Se llama al método form y guardamos la respuesta en $response
-$response = $paycomet-> form( 1,'ES',9779,$_POST['order'],number_format($_POST['amount']*100,0, '.', ''),'EUR',1);
+//parametros del form
+$terminal = 9779;
+$amount = number_format($_POST['amount']*100,0, '.', '');
+$methodId = $_POST['method'];
+
+if ($methodId == 1) {
+  // Se llama al método form y guardamos la respuesta en $response
+  $response = $paycomet-> form( 
+    1,
+    'ES',
+    $terminal,
+    $_POST['order'],
+    $amount,
+    'EUR',
+    1
+  );
+} else {
+
+  // Ejecutamos el executePurchase
+  $response = $paycomet-> executePurchase(
+    $terminal,
+    $_POST['order'],
+    $amount,
+    'EUR',
+    '127.0.0.1',
+    $methodId, // method id
+    null,
+    null,
+    1, // secure
+    1, // user interaction
+    null, // sca_exception
+    null, // trx_type
+    null, // productDescription
+    null, // scoring
+    "http://localhost/PAYCOMET-EXAMPLES/ok.php",
+    "http://localhost/PAYCOMET-EXAMPLES/ko.php",
+    null // merchant_data
+  );
+
+}
+
 
 // Guardamos la challengeUrl
 $URL = json_decode($response)->challengeUrl;
