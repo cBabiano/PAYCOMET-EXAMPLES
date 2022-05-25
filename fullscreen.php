@@ -8,7 +8,7 @@ include("class/API_Rest.php");
 // Se indica la API-KEY y terminal
 $apiKey    = "5f8d97198d51522ca4f7c452cc50f91ae9a16cbf";
 $paycomet = new Paycomet_Rest($apiKey);
-$terminal = 48441;
+$terminal = 48442;
 
 
 ?>
@@ -33,6 +33,25 @@ $terminal = 48441;
             <label for="method" class="control-label">REFERENCIA [Máximo 20 caracteres]</label>
             <input type="text" class="form-control" id="order" name="order" aria-label="" maxlength="20" />
           </div>
+          <div class="form-group">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-secondary active">
+                <input type="radio" name="method" id="card" value="1" checked> Tarjeta
+              </label>
+              <?php
+              $paymentMethods = json_decode($paycomet->methods($terminal));
+
+              // Si no hay error en la consulta a los metodos
+              if (!isset($paymentMethods->errorCode)) {
+                foreach ($paymentMethods as $apm) {
+                  if ($apm->id != 1) {
+                    echo "<label class=\"btn btn-secondary\"><input type=\"radio\" id=\"" . $apm->name . "\" name=\"method\" value=\"" . $apm->id . "\">" . $apm->name . "</label>";
+                  }
+                }
+              }
+              ?>
+            </div>
+          </div>
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-large btn-block btn-primary">Continuar</button>
@@ -50,7 +69,7 @@ $terminal = 48441;
 
 //parametros del form
 $amount = number_format($_POST['amount'] * 100, 0, '.', '');
-$methodId = 1;
+$methodId = $_POST['method'];
 
 if ($methodId == 1) {
   // Se llama al método form y guardamos la respuesta en $response
@@ -91,8 +110,19 @@ if ($methodId == 1) {
 // Guardamos la challengeUrl
 $URL = json_decode($response)->challengeUrl;
 
+// Redirección con javascript
+if ($URL != null) {
+  echo '<script type="text/javascript">';
+  echo 'window.location.href="' . $URL . '";';
+  echo '</script>';
+  
+  echo '<noscript>';
+  echo '<meta http-equiv="refresh" content="0;url=' . $URL . '" />';
+  echo '</noscript>';
 
-echo " <iframe class=\"col-md-offset-5 centered\" style=\"height:400px;width:300px;border:none;\"  src=\"" . $URL . "\" title=\"iframe\"></iframe> ";
+  die();
+  
+  }
 ?>
 
 <?php

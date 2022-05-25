@@ -25,6 +25,9 @@
                     <a class="nav-link" href="form.php">Iframe <span class="sr-only"></span></a>
                 </li>
                 <li class="nav-item ">
+                    <a class="nav-link" href="fullscreen.php">FullScreen <span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item ">
                     <a class="nav-link" href="jet_iframe.php">Jet-Iframe <span class="sr-only"></span></a>
                 </li>
                 <li class="nav-item">
