@@ -12,7 +12,7 @@
 include("class/API_Rest.php");
 
 // Se indica el jetID
-$jetID = "ROMrGL6huZ05fwnti7YeAIUkDpqoxsKb";
+$jetID = "2Ui0z7o84Gv3dmAhXabHRD1CngSpywex";
 
 // Comprobamos que devuelve jetToken
 if (isset($_POST["paytpvToken"])) {
@@ -25,11 +25,11 @@ if (isset($_POST["paytpvToken"])) {
     if ($token && strlen($token) == 64) {
 
 		// Indicamos la API-KEY
-		$apiKey		= "d58bcc758623525ad0d90708101dfdad5541882b";
+		$apiKey		= "4946862062130a3737333942ee2daedaf04ff3d5";
 		$paycomet= new Paycomet_Rest($apiKey);
 
 		// propiedades
-		$terminal = 38424;
+		$terminal = 9779;
 		$amount = number_format($_POST['amount']*100,0, '.', '');
 
 		

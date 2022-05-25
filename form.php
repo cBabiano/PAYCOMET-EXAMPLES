@@ -115,14 +115,14 @@ if ($URL != null) {
   echo '<script type="text/javascript">';
   echo 'window.location.href="' . $URL . '";';
   echo '</script>';
+  
   echo '<noscript>';
   echo '<meta http-equiv="refresh" content="0;url=' . $URL . '" />';
   echo '</noscript>';
 
   die();
-}
-
-
+  
+  }
 ?>
 
 <?php
